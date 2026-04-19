@@ -1,0 +1,332 @@
+{
+  "info": {
+    "name": "Unikart Campus Shopping API",
+    "description": "Complete API collection for Unikart e-commerce platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/health",
+              "host": ["{{baseURL}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/api/auth/register",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@campus.edu\",\n  \"password\": \"TestPassword123\",\n  \"full_name\": \"John Student\",\n  \"account_type\": \"student\",\n  \"faculty\": \"Computing\",\n  \"contact\": \"0700000000\"\n}"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/api/auth/login",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@campus.edu\",\n  \"password\": \"TestPassword123\"\n}"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Verify Token",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/api/auth/verify",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "auth", "verify"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/api/auth/logout",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/api/products?page=1&limit=20&search=&category=&sort=newest",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "products"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "newest"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/api/products/1",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/api/products",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "products"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"LAPTOP-001\",\n  \"name\": \"Gaming Laptop\",\n  \"description\": \"High-performance laptop for gaming and work\",\n  \"short_description\": \"Gaming laptop\",\n  \"price\": 2500000,\n  \"category_id\": 1,\n  \"supplier_id\": 1,\n  \"stock_quantity\": 10,\n  \"is_featured\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseURL}}/api/products/1",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "products", "1"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 2600000,\n  \"stock_quantity\": 8\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/api/products/1",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "products", "1"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/api/orders",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "orders"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity\": 2\n    }\n  ],\n  \"delivery_method\": \"delivery\",\n  \"delivery_address\": \"123 Campus Street, Building A\",\n  \"payment_method\": \"mobile_money\",\n  \"payment_provider\": \"mtn_momo\",\n  \"payment_number\": \"0700000000\",\n  \"delivery_date\": \"2024-02-01\",\n  \"delivery_time\": \"14:00\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User Orders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/api/orders?page=1&limit=10",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "orders"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Order Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/api/orders/1",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "orders", "1"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseURL}}/api/orders/1/cancel",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "orders", "1", "cancel"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Order Status (Admin)",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseURL}}/api/orders/1/status",
+              "host": ["{{baseURL}}"],
+              "path": ["api", "orders", "1", "status"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_status\": \"confirmed\",\n  \"notes\": \"Order confirmed and processing\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
