@@ -30,7 +30,11 @@ app.use(requestLogger);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-// Health check endpoint
+// Root and health check endpoints
+app.get('/', (req, res) => {
+  res.send('Unikart backend running');
+});
+
 app.get('/health', (req, res) => {
   res.json({
     status: 'success',
@@ -61,7 +65,7 @@ app.use(errorHandler);
 
 // Start server
 const PORT = config.port;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ====================================
   Unikart Backend API

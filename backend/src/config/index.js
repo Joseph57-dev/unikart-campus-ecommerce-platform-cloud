@@ -6,7 +6,7 @@ module.exports = {
   
   // Database
   database: {
-    url: process.env.DATABASE_URL, // PostgreSQL connection string
+    url: process.env.DATABASE_URL || `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT || 5432}/${process.env.DB_NAME}`,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
   },
 
@@ -20,7 +20,7 @@ module.exports = {
     cognito: {
       region: process.env.COGNITO_REGION || 'eu-north-1',
       userPoolId: process.env.COGNITO_USER_POOL_ID,
-      appClientId: process.env.COGNITO_APP_CLIENT_ID,
+      appClientId: process.env.COGNITO_CLIENT_ID || process.env.COGNITO_APP_CLIENT_ID,
       identityPoolId: process.env.COGNITO_IDENTITY_POOL_ID
     },
     sns: {
