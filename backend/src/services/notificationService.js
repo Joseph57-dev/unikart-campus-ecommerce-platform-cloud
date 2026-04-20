@@ -199,7 +199,7 @@ const sendAdminOrderNotification = async (order) => {
     shippingAddress: order.shippingAddress,
     timestamp: new Date().toISOString(),
     actionRequired: 'Please process this order',
-    dashboardUrl: `${process.env.BACKEND_URL || 'http://localhost:5000'}/admin/orders/${order.id}`
+    dashboardUrl: `${process.env.BACKEND_URL || 'http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com'}/admin/orders/${order.id}`
   };
 
   return sendSNSNotification(message, `New Order #${order.orderNumber || order.id}`);

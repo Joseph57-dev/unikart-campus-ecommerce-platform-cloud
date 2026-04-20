@@ -20,10 +20,7 @@ const app = express();
 app.use(helmet());
 app.use(compression());
 app.use(cors({
-  origin: [config.urls.frontend, config.urls.apiBase, 'http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key']
+  origin: '*'
 }));
 app.use(morgan('dev'));
 app.use(requestLogger);

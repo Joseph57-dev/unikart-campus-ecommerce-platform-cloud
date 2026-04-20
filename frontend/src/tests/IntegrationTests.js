@@ -22,7 +22,7 @@ class IntegrationTests {
   // Test 1: Health Check
   async testHealthCheck() {
     try {
-      const response = await fetch('http://localhost:5000/health');
+      const response = await fetch('http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/health');
       const data = await response.json();
       
       if (data.status === 'success') {

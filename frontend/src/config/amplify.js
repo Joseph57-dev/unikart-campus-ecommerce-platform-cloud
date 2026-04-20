@@ -9,8 +9,8 @@ const amplifyConfig = {
     oauth: {
       domain: import.meta.env.VITE_COGNITO_DOMAIN || 'your-domain.auth.eu-north-1.amazoncognito.com',
       scope: ['phone', 'email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
-      redirectSignIn: import.meta.env.VITE_REDIRECT_SIGN_IN || 'http://localhost:5173/',
-      redirectSignOut: import.meta.env.VITE_REDIRECT_SIGN_OUT || 'http://localhost:5173/',
+      redirectSignIn: import.meta.env.VITE_REDIRECT_SIGN_IN || 'http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/',
+      redirectSignOut: import.meta.env.VITE_REDIRECT_SIGN_OUT || 'http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/',
       responseType: 'code'
     }
   }
