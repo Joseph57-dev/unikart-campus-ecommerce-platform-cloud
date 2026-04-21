@@ -1,72 +1,85 @@
-import apiClient from './api';
+﻿import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession } from "aws-amplify/auth";
+import apiClient from "./api";
 
 export const authService = {
   // Register user
   register: async (userData) => {
     try {
-      const response = await apiClient.post('/auth/register', userData);
-      if (response.data.data.token) {
-        localStorage.setItem('token', response.data.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data.user));
-      }
-      return response.data;
+      const { username, password, email } = userData;
+      const result = await signUp({
+        username,
+        password,
+        options: {
+          userAttributes: { email }
+        }
+      });
+      return { status: "success", data: result };
     } catch (error) {
-      throw error.response?.data || { message: error.message };
+      console.error("Auth Error:", error);
+      throw error;
     }
   },
 
   // Login user
   login: async (email, password) => {
     try {
-      const response = await apiClient.post('/auth/login', { email, password });
-      if (response.data.data.token) {
-        localStorage.setItem('token', response.data.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data.user));
-      }
-      return response.data;
+      const user = await signIn({ username: email, password });
+      // Get user info from backend
+      const response = await apiClient.get("/auth/verify");
+      localStorage.setItem("user", JSON.stringify(response.data.data.user));
+      return { status: "success", data: { user: response.data.data.user } };
     } catch (error) {
-      throw error.response?.data || { message: error.message };
+      console.error("Auth Error:", error);
+      throw error;
     }
   },
 
   // Logout user
   logout: async () => {
     try {
-      await apiClient.post('/auth/logout');
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      await signOut();
+      localStorage.removeItem("user");
+      window.location.href = "/login";
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Auth Error:", error);
     }
   },
 
   // Verify token
   verify: async () => {
     try {
-      const response = await apiClient.get('/auth/verify');
+      const response = await apiClient.get("/auth/verify");
       return response.data;
     } catch (error) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
       throw error;
     }
   },
 
   // Get stored user
   getStoredUser: () => {
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
   },
 
   // Get token
-  getToken: () => {
-    return localStorage.getItem('token');
+  getToken: async () => {
+    try {
+      const session = await fetchAuthSession();
+      return session.tokens?.idToken?.toString();
+    } catch (error) {
+      return null;
+    }
   },
 
   // Check if authenticated
-  isAuthenticated: () => {
-    return !!localStorage.getItem('token');
+  isAuthenticated: async () => {
+    try {
+      await getCurrentUser();
+      return true;
+    } catch {
+      return false;
+    }
   }
 };
 
