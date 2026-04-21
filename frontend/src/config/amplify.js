@@ -1,14 +1,11 @@
-﻿import { Amplify } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 
-const awsConfig = {
+Amplify.configure({
   Auth: {
-    region: "eu-north-1",
-    userPoolId: "eu-north-1_Jpd1eE1wJ",
-    userPoolWebClientId: "48ip13sdqqc03pfr8gfoh769ji",
-    authenticationFlowType: "USER_PASSWORD_AUTH"
+    Cognito: {
+      userPoolId: "eu-north-1_Jpd1eE1wJ",
+      userPoolClientId: "48ip13sdqqc03pfr8gfoh769ji",
+      region: "eu-north-1"
+    }
   }
-};
-
-Amplify.configure(awsConfig);
-
-export default awsConfig;
+});
