@@ -50,7 +50,7 @@ PORT=5000
 NODE_ENV=development
 
 # PostgreSQL Database
-DB_HOST=localhost
+DB_HOST=your_db_host
 DB_PORT=5432
 DB_NAME=unikart_db
 DB_USER=postgres
@@ -80,8 +80,8 @@ JWT_SECRET=your_jwt_secret_key_change_in_production
 JWT_EXPIRE=7d
 
 # App Configuration
-FRONTEND_URL=http://localhost:5173
-BACKEND_URL=http://localhost:5000
+FRONTEND_URL=http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com
+BACKEND_URL=http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com
 FILE_UPLOAD_SIZE=5242880
 
 # Email Configuration (Optional)

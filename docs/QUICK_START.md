@@ -13,7 +13,7 @@ cd src/backend
 npm install
 npm start
 ```
-✅ Backend running on `http://localhost:5000`
+✅ Backend running on `http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com`
 
 ### 3. Start the Frontend (New Terminal)
 ```bash
@@ -21,7 +21,7 @@ cd src/frontend
 npm install
 npm run dev
 ```
-✅ Frontend running on `http://localhost:5173`
+✅ Frontend running on `http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com`
 
 ### 4. Test Everything Works
 ```bash
@@ -80,5 +80,5 @@ start docs/README_COMPLETE.md
 
 ---
 
-**🎉 Ready to shop! Visit `http://localhost:5173`**</content>
+**🎉 Ready to shop! Visit `http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com`**</content>
 <parameter name="filePath">d:\Downloads\unikart\docs\QUICK_START.md

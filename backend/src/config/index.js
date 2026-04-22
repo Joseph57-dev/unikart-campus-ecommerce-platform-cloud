@@ -15,7 +15,7 @@ module.exports = {
     region: process.env.AWS_REGION || 'eu-north-1',
     s3: {
       bucket: process.env.AWS_S3_BUCKET || 'unikart-products',
-      region: process.env.AWS_S3_REGION || 'us-east-1'
+      region: process.env.AWS_S3_REGION || process.env.AWS_REGION || 'eu-north-1'
     },
     cognito: {
       region: process.env.COGNITO_REGION || 'eu-north-1',

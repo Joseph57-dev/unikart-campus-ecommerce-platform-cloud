@@ -13,13 +13,13 @@ Welcome to Unikart! Your e-commerce platform is ready to run locally.
 
 ### Both servers are currently running!
 
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5000
-- **Health Check**: http://localhost:5000/health
+- **Frontend**: http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com
+- **Backend API**: http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com
+- **Health Check**: http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/health
 
 ## 📋 Quick Test
 
-1. **Open your browser** and go to http://localhost:5173
+1. **Open your browser** and go to http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com
 2. **Browse the shop** - You'll see sample products
 3. **Add items to cart** - Click "Add to Cart" on any product
 4. **Go to checkout** - Complete an order
@@ -83,13 +83,13 @@ AWS_SES_SENDER_EMAIL=noreply@yourdomain.com
 ### API Testing
 ```bash
 # Health check
-curl http://localhost:5000/health
+curl http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/health
 
 # Get products
-curl http://localhost:5000/api/products
+curl http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/api/products
 
 # Create order (requires authentication)
-curl -X POST http://localhost:5000/api/orders \
+curl -X POST http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/api/orders \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"items":[...], "delivery_method":"delivery", ...}'
@@ -185,7 +185,7 @@ kill -9 <PID>
 
 ### CORS Errors
 - Ensure backend is running on port 5000
-- Check `FRONTEND_URL` in backend `.env` is `http://localhost:5173`
+- Check `FRONTEND_URL` in backend `.env` is `http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com`
 - Clear browser cache
 
 ### Module Not Found

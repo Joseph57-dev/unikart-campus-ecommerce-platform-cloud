@@ -4,12 +4,12 @@ async function testConnection() {
     console.log('Testing backend connection...');
 
     // Test health endpoint
-    const healthResponse = await fetch('http://localhost:5000/health');
+    const healthResponse = await fetch('http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/health');
     const healthData = await healthResponse.json();
     console.log('Health check:', healthData);
 
     // Test products endpoint
-    const productsResponse = await fetch('http://localhost:5000/api/products');
+    const productsResponse = await fetch('http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/api/products');
     const productsData = await productsResponse.json();
     console.log('Products API:', productsData);
 

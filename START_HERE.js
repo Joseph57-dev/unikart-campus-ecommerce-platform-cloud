@@ -39,12 +39,12 @@ console.log(`
 
   1. Install dependencies:
 
-     cd src/backend
+     cd backend
      npm install
      npm start
 
      # In another terminal:
-     cd src/frontend
+     cd frontend
      npm install
      npm run dev
 

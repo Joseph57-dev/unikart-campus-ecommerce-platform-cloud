@@ -1,71 +1,5 @@
-const jwt = require('jsonwebtoken');
-const { CognitoJwtVerifier } = require('aws-jwt-verify');
-const config = require('../config');
-
-// Create Cognito JWT verifier
-const verifier = CognitoJwtVerifier.create({
-  userPoolId: config.aws.cognito.userPoolId,
-  tokenUse: 'access',
-  clientId: config.aws.cognito.appClientId,
-});
-
-// Middleware to verify JWT token
-const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({
-      status: 'error',
-      message: 'No token provided',
-      data: null
-    });
-  }
-
-  try {
-    const decoded = jwt.verify(token, config.apiKeys.jwtSecret);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    return res.status(401).json({
-      status: 'error',
-      message: 'Invalid or expired token',
-      data: null
-    });
-  }
-};
-
-// Verify Cognito JWT token
-const verifyCognitoToken = async (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({
-      status: 'error',
-      message: 'No token provided',
-      data: null
-    });
-  }
-
-  try {
-    // Verify token with Cognito
-    const payload = await verifier.verify(token);
-
-    req.user = {
-      sub: payload.sub,
-      email: payload.email,
-      username: payload['cognito:username'],
-      accountType: payload['custom:account_type'] || 'student'
-    };
-    next();
-  } catch (error) {
-    console.error('Token verification failed:', error);
-    return res.status(401).json({
-      status: 'error',
-      message: 'Invalid token: ' + error.message,
-      data: null
-    });
-  }
-};
+// Note: Cognito token verification is now handled by middleware/cognitoAuth.js
+// This file contains only authorization and utility middleware
 
 // Check user role/permissions
 const authorize = (allowedRoles) => {
@@ -123,8 +57,6 @@ const requestLogger = (req, res, next) => {
 };
 
 module.exports = {
-  verifyToken,
-  verifyCognitoToken,
   authorize,
   errorHandler,
   requestLogger

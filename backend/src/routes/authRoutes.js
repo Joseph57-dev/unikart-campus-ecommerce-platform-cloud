@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const { verifyCognitoToken } = require('../middleware/auth');
+const verifyCognitoToken = require('../middleware/cognitoAuth');
 
 // Public routes (no auth required)
 router.post('/logout', authController.logout);
