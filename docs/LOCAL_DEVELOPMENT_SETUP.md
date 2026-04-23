@@ -68,15 +68,9 @@ AWS_SNS_TOPIC_ARN=arn:aws:sns:us-east-1:account-id:order-notifications
 AWS_SES_SENDER_EMAIL=noreply@yourdomain.com
 AWS_SES_CONFIGURATION_SET=UnikartConfigSet
 
-# AWS Cognito (Optional)
-COGNITO_REGION=us-east-1
-COGNITO_USER_POOL_ID=us-east-1_xxxxxxxxx
-COGNITO_APP_CLIENT_ID=your_client_id
-COGNITO_IDENTITY_POOL_ID=us-east-1:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-
-# API Configuration
+# API configuration (JWT auth — set strong secrets in production)
 API_SECRET_KEY=your_super_secret_key_change_in_production
-JWT_SECRET=your_jwt_secret_key_change_in_production
+JWT_SECRET=unikart_super_secure_key_123
 JWT_EXPIRE=7d
 
 # App Configuration

@@ -5,7 +5,7 @@ A modern, scalable e-commerce platform built for campus communities with role-ba
 ## ✨ Features
 
 ### 🔐 Authentication & Authorization
-- JWT-based authentication with Cognito integration
+- JWT-based API authentication
 - Multi-role access control (Student, Vendor, Dean, Admin)
 - Secure password hashing with bcrypt
 - Token-based session management
@@ -51,8 +51,8 @@ A modern, scalable e-commerce platform built for campus communities with role-ba
 - **Runtime**: Node.js 16+
 - **Framework**: Express.js 4.18
 - **Database**: PostgreSQL 12+
-- **Cloud**: AWS (S3, Cognito, Lambda, RDS)
-- **Authentication**: JWT + AWS Cognito
+- **Cloud**: AWS (S3, Lambda, RDS)
+- **Authentication**: JWT (API)
 - **ORM**: Native Node PostgreSQL client
 - **File Upload**: Multer + AWS S3
 
@@ -443,7 +443,7 @@ For issues and questions:
 
 1. **Test Locally**: Run through all features in development
 2. **Database Migration**: Import production data if available
-3. **AWS Setup**: Configure Cognito, S3, RDS for cloud deployment
+3. **AWS Setup**: Configure S3, RDS, and backend `JWT_SECRET` for cloud deployment
 4. **CI/CD Pipeline**: Set up GitHub Actions for automated testing
 5. **Load Testing**: Use Apache JMeter or Artillery
 6. **Security Audit**: Run OWASP security checks

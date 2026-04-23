@@ -71,7 +71,7 @@ This document provides a final verification that the Unikart e-commerce applicat
   - [ ] Region specified
   - [ ] CORS rules configured
   - [ ] IAM user created with S3 access
-- [ ] AWS Cognito User Pool created (for JWT signing)
+- [ ] `JWT_SECRET` and `JWT_EXPIRE` set for the API
   - [ ] User pool ID obtained
   - [ ] Client ID obtained
   - [ ] Region specified
@@ -150,13 +150,10 @@ This document provides a final verification that the Unikart e-commerce applicat
 - [ ] IAM policy created for backend
 - [ ] CloudFront distribution configured (optional, for CDN)
 
-#### Cognito (Authentication - Optional)
-- [ ] User Pool created: `unikart-users`
-- [ ] App client configured
-- [ ] Custom domain set (if using Cognito UI)
-- [ ] Email verification enabled
-- [ ] MFA configured (if required)
-- [ ] Sign-up and sign-in flows configured
+#### JWT (API authentication)
+- [ ] `JWT_SECRET` set to a strong random value in production
+- [ ] `JWT_EXPIRE` set (e.g. `7d`)
+- [ ] Login and `/api/auth/verify` tested against deployed API
 
 #### CloudFront (CDN - Optional)
 - [ ] CDN distribution created for frontend
@@ -353,7 +350,7 @@ This document provides a final verification that the Unikart e-commerce applicat
 ### Production Simulation
 - [ ] Test with production database
 - [ ] Test with production S3 bucket
-- [ ] Test with production Cognito pool
+- [ ] Test login and `/api/auth/verify` with a production-issued token
 - [ ] Test email notifications (if configured)
 - [ ] Test payment integration (if configured)
 

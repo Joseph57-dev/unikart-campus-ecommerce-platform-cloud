@@ -1,6 +1,6 @@
 # Unikart Cloud Deployment Guide
 
-This guide covers setting up, testing, and deploying the complete Unikart application stack with Node.js backend, React frontend, PostgreSQL database, and AWS Cognito integration.
+This guide covers setting up, testing, and deploying the complete Unikart application stack with Node.js backend, React frontend, PostgreSQL database, and JWT API authentication.
 
 ## 🗂️ Project Structure
 
@@ -237,14 +237,9 @@ SELECT COUNT(*) FROM user_account;
 aws s3 mb s3://unikart-products --region us-east-1
 ```
 
-### 2. Create Cognito User Pool
+### 2. Configure JWT for the API
 
-```bash
-# Using AWS Console or CLI:
-aws cognito-idp create-user-pool \
-  --pool-name UnikartUserPool \
-  --region us-east-1
-```
+Set `JWT_SECRET` and `JWT_EXPIRE` in the backend environment (see `backend/.env.example`). The API signs and verifies access tokens for `/api/auth/login`, `/api/auth/register`, and protected routes.
 
 ### 3. Create IAM User for API
 
@@ -252,8 +247,6 @@ aws cognito-idp create-user-pool \
 aws iam create-user --user-name unikart-api
 aws iam attach-user-policy --user-name unikart-api \
   --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
-aws iam attach-user-policy --user-name unikart-api \
-  --policy-arn arn:aws:iam::aws:policy/AmazonCognitoPowerUser
 ```
 
 ### 4. Configure Bucket CORS

@@ -69,7 +69,7 @@ src/config/
 ├── database.js                🗄️ PostgreSQL connection pool
 │                              └─ Connection pooling (20 max connections)
 └── aws.js                     ☁️ AWS SDK initialization
-                               └─ S3 and Cognito setup
+                               └─ S3 and JWT auth setup
 ```
 
 ### Controllers Directory (`src/controllers/`)
