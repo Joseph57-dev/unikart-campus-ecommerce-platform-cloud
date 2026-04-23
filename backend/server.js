@@ -71,12 +71,14 @@ app.listen(PORT, '0.0.0.0', () => {
   Port: ${PORT}
   Frontend URL: ${config.urls.frontend}
   Database: PostgreSQL RDS
-  Auth: AWS Cognito
+  Auth: JWT (API)
 ====================================
   Endpoints:
   - GET  /health                    - Health check
+  - POST /api/auth/register         - Register
+  - POST /api/auth/login            - Login
   - POST /api/auth/logout           - User logout
-  - GET  /api/auth/verify           - Verify Cognito token
+  - GET  /api/auth/verify           - Verify JWT
   - GET  /api/products              - Get all products
   - GET  /api/products/:id          - Get product details
   - POST /api/products               - Create product (admin/vendor)

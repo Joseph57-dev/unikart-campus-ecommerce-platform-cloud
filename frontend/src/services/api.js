@@ -1,7 +1,17 @@
 ﻿import axios from "axios";
-import authService from "./authService";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/api";
+
+function redirectToLogin() {
+  const base = import.meta.env.BASE_URL || "/";
+  if (base === "./") {
+    window.location.assign("./login");
+    return;
+  }
+  window.location.assign(`${String(base).replace(/\/?$/, "")}/login`);
+}
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -11,32 +21,24 @@ const apiClient = axios.create({
   }
 });
 
-// Add token to requests
 apiClient.interceptors.request.use(
-  async (config) => {
-    try {
-      const token = await authService.getToken();
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    } catch (error) {
-      console.error("Error getting token:", error);
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Handle responses
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or unauthorized
       localStorage.removeItem("user");
-      window.location.href = "/login";
+      localStorage.removeItem("token");
+      redirectToLogin();
     }
     return Promise.reject(error);
   }
