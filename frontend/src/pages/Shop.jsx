@@ -74,7 +74,7 @@ function Shop({ onAdd }) {
       <div className="product-grid">
         {products.map((product) => (
           <article key={product.product_id} className="product-card">
-            <div className="product-image" style={{ backgroundImage: `url(${product.image_url || '/placeholder.jpg'})` }} />
+            <div className="product-image" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}${product.image_url || product.image || 'placeholder.jpg'})` }} />
             <div className="product-details">
               <span className="product-category">{product.category_name || 'Uncategorized'}</span>
               <h2>{product.name}</h2>
