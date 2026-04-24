@@ -60,7 +60,7 @@
 | Backend | Node.js 16+, Express 4.18, JWT |
 | Database | PostgreSQL 12+ |
 | Cloud Storage | AWS S3 |
-| Authentication | JWT (API) |
+| Authentication | Cognito (optional), JWT |
 | Security | bcryptjs, Helmet.js, CORS |
 | DevOps | Docker, GitHub Actions (optional) |
 
@@ -389,7 +389,7 @@ unikart/
    - Create S3 bucket for images
    - Set up CloudFront distribution
    - Create RDS PostgreSQL instance
-   - Set `JWT_SECRET` / `JWT_EXPIRE` on the backend
+   - (Optional) Set up Cognito User Pool
 
 2. **Update Environment Variables:**
    - Copy `.env.example` to `.env`

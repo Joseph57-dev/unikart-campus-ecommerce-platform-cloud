@@ -294,7 +294,7 @@ Backend Stack:
 
 Cloud Services:
 ├── AWS S3 (Image storage)
-├── JWT API authentication
+├── AWS Cognito (Authentication - optional)
 ├── AWS RDS (Managed database)
 └── AWS CloudFront (CDN)
 
@@ -480,7 +480,7 @@ Follow **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** for your chosen platform:
 📊 Designed PostgreSQL schema with 25+ tables
 🔧 Built comprehensive Node.js/Express API (15+ endpoints)
 ⚛️ Created responsive React frontend (25+ components)
-☁️ Integrated AWS S3, RDS, CloudFront, and JWT auth
+☁️ Integrated AWS S3, Cognito, RDS, CloudFront
 🧪 Created automated testing suite (10+ tests)
 📚 Generated 3000+ lines of documentation
 🚀 Deployed production-ready application

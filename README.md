@@ -9,7 +9,7 @@ This application is configured for AWS cloud deployment with the following infra
 ### AWS Resources Configured:
 - **Load Balancer**: `http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com`
 - **Database**: PostgreSQL RDS (`unikart-postgres.chogwkgeox2f.eu-north-1.rds.amazonaws.com`)
-- **Authentication**: JWT issued by the Node.js API (`JWT_SECRET` / `JWT_EXPIRE` in backend environment)
+- **Authentication**: AWS Cognito (User Pool: `eu-north-1_Jpd1eE1wJ`)
 - **Auto Scaling**: EC2 instances with target group
 - **Region**: eu-north-1 (Stockholm)
 

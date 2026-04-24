@@ -4,7 +4,7 @@ const db = require('../utils/database');
 const config = require('../config');
 
 const generateToken = ({ account_id, university_email, account_type }) => {
-  const secret = config.jwtSecret;
+  const secret = config.apiKeys.jwtSecret;
   if (!secret) {
     throw new Error('JWT_SECRET is not configured');
   }
@@ -16,7 +16,7 @@ const generateToken = ({ account_id, university_email, account_type }) => {
       accountType: account_type
     },
     secret,
-    { expiresIn: config.jwtExpire || '7d' }
+    { expiresIn: config.apiKeys.jwtExpire || '7d' }
   );
 };
 
@@ -89,18 +89,18 @@ const register = async (req, res) => {
       account_type: userAccount.account_type
     });
 
-    const user = {
-      account_id: userAccount.account_id,
-      email: userAccount.university_email,
-      account_type: userAccount.account_type,
-      full_name: full_name || ''
-    };
-
     res.status(201).json({
       status: 'success',
       message: 'User registered successfully',
-      token,
-      user
+      data: {
+        user: {
+          account_id: userAccount.account_id,
+          email: userAccount.university_email,
+          account_type: userAccount.account_type,
+          full_name: full_name || ''
+        },
+        token
+      }
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -177,19 +177,19 @@ const login = async (req, res) => {
       account_type: userAccount.account_type
     });
 
-    const user = {
-      account_id: userAccount.account_id,
-      email: userAccount.university_email,
-      account_type: userAccount.account_type,
-      full_name: userProfile?.full_name || '',
-      contact: userProfile?.contact || ''
-    };
-
     res.json({
       status: 'success',
       message: 'Login successful',
-      token,
-      user
+      data: {
+        user: {
+          account_id: userAccount.account_id,
+          email: userAccount.university_email,
+          account_type: userAccount.account_type,
+          full_name: userProfile?.full_name || '',
+          contact: userProfile?.contact || ''
+        },
+        token
+      }
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -221,13 +221,11 @@ const verify = async (req, res) => {
   try {
     const user = req.user;
 
-    const accountId = Number.parseInt(String(user.sub), 10);
-
     const userAccount = await db.getOne(
       `SELECT account_id, university_email, account_type, account_status
        FROM user_account
        WHERE account_id = $1`,
-      [accountId]
+      [user.sub]
     );
 
     if (!userAccount) {

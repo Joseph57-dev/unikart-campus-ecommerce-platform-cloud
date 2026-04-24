@@ -420,7 +420,7 @@ PostgreSQL 12+
 
 ### Cloud Services Integration
 - [x] AWS S3 for image storage
-- [x] JWT API authentication
+- [x] AWS Cognito for authentication (optional)
 - [x] AWS RDS for managed database
 - [x] AWS CloudFront for CDN
 - [x] Google Cloud Storage

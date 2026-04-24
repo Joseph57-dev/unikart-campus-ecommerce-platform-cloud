@@ -17,7 +17,7 @@ const verifyJwt = (req, res, next) => {
     });
   }
 
-  const secret = config.jwtSecret;
+  const secret = config.apiKeys.jwtSecret;
   if (!secret) {
     return res.status(500).json({
       status: 'error',

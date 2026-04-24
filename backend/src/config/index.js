@@ -10,10 +10,6 @@ module.exports = {
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
   },
 
-  // JWT (API authentication)
-  jwtSecret: process.env.JWT_SECRET,
-  jwtExpire: process.env.JWT_EXPIRE || '7d',
-
   // AWS
   aws: {
     region: process.env.AWS_REGION || 'eu-north-1',
@@ -30,18 +26,18 @@ module.exports = {
     }
   },
 
-  // API Keys (non-JWT secrets)
+  // API Keys
   apiKeys: {
-    secret: process.env.API_SECRET_KEY
+    secret: process.env.API_SECRET_KEY,
+    jwtSecret: process.env.JWT_SECRET,
+    jwtExpire: process.env.JWT_EXPIRE || '7d'
   },
 
   // URLs
   urls: {
     frontend: process.env.FRONTEND_URL || 'http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com',
     backend: process.env.BACKEND_URL || 'http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com',
-    apiBase:
-      process.env.API_BASE_URL ||
-      'http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com/api'
+    apiBase: process.env.API_BASE_URL || 'http://unikart-alb-296069847.eu-north-1.elb.amazonaws.com'
   },
 
   // File Upload

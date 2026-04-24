@@ -14,21 +14,11 @@ function redirectToLogin() {
   window.location.assign(`${String(base).replace(/\/?$/, "")}/login`);
 }
 
-function persistSessionFromResponseBody(body) {
-  if (!body || body.status !== "success") return;
-  if (body.token) {
-    localStorage.setItem("token", body.token);
-  }
-  if (body.user) {
-    localStorage.setItem("user", JSON.stringify(body.user));
-  }
-}
-
 export const authService = {
   register: async (userData) => {
     const { email, password, full_name, account_type, faculty, contact } = userData;
 
-    const { data: responseData } = await axios.post(`${API_BASE_URL}/auth/register`, {
+    const { data } = await axios.post(`${API_BASE_URL}/auth/register`, {
       email,
       password,
       full_name,
@@ -37,34 +27,30 @@ export const authService = {
       contact
     });
 
-    persistSessionFromResponseBody(responseData);
+    if (data?.data?.token) {
+      localStorage.setItem("token", data.data.token);
+    }
+    if (data?.data?.user) {
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+    }
 
-    return {
-      status: responseData.status,
-      message: responseData.message,
-      data: {
-        token: responseData.token,
-        user: responseData.user
-      }
-    };
+    return { status: data.status, data: data.data, message: data.message };
   },
 
   login: async (email, password) => {
-    const { data: responseData } = await axios.post(`${API_BASE_URL}/auth/login`, {
+    const { data } = await axios.post(`${API_BASE_URL}/auth/login`, {
       email,
       password
     });
 
-    persistSessionFromResponseBody(responseData);
+    if (data?.data?.token) {
+      localStorage.setItem("token", data.data.token);
+    }
+    if (data?.data?.user) {
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+    }
 
-    return {
-      status: responseData.status,
-      message: responseData.message,
-      data: {
-        token: responseData.token,
-        user: responseData.user
-      }
-    };
+    return { status: data.status, data: data.data, message: data.message };
   },
 
   logout: () => {
@@ -91,7 +77,7 @@ export const authService = {
 
   getToken: () => localStorage.getItem("token"),
 
-  isAuthenticated: () => !!localStorage.getItem("token")
+  isAuthenticated: () => Boolean(localStorage.getItem("token"))
 };
 
 export default authService;
