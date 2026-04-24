@@ -17,6 +17,12 @@ module.exports = {
       bucket: process.env.AWS_S3_BUCKET || 'unikart-products',
       region: process.env.AWS_S3_REGION || process.env.AWS_REGION || 'eu-north-1'
     },
+    cognito: {
+      region: process.env.COGNITO_REGION || 'eu-north-1',
+      userPoolId: process.env.COGNITO_USER_POOL_ID,
+      appClientId: process.env.COGNITO_CLIENT_ID || process.env.COGNITO_APP_CLIENT_ID,
+      identityPoolId: process.env.COGNITO_IDENTITY_POOL_ID
+    },
     sns: {
       topicArn: process.env.AWS_SNS_TOPIC_ARN
     },

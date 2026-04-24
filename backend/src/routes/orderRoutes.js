@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
-const { authorize } = require('../middleware/auth');
-const verifyJwt = require('../middleware/jwtAuth');
+const { verifyCognitoToken, authorize } = require('../middleware/auth');
 
 // Protected routes (Student only for personal orders)
-router.post('/', verifyJwt, orderController.createOrder);
-router.get('/', verifyJwt, orderController.getUserOrders);
-router.get('/:id', verifyJwt, orderController.getOrder);
-router.put('/:id/cancel', verifyJwt, orderController.cancelOrder);
+router.post('/', verifyCognitoToken, orderController.createOrder);
+router.get('/', verifyCognitoToken, orderController.getUserOrders);
+router.get('/:id', verifyCognitoToken, orderController.getOrder);
+router.put('/:id/cancel', verifyCognitoToken, orderController.cancelOrder);
 
 // Admin/Vendor routes
-router.put('/:id/status', verifyJwt, authorize(['admin', 'vendor']), orderController.updateOrderStatus);
+router.put('/:id/status', verifyCognitoToken, authorize(['admin', 'vendor']), orderController.updateOrderStatus);
 
 module.exports = router;

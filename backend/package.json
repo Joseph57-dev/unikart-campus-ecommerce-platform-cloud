@@ -13,7 +13,7 @@
     "ecommerce",
     "api",
     "aws",
-    "jwt"
+    "cognito"
   ],
   "author": "",
   "license": "MIT",

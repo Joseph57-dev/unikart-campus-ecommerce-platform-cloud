@@ -13,6 +13,11 @@ const s3 = new AWS.S3({
   region: config.aws.s3.region
 });
 
+// Cognito Identity Service Provider
+const cognitoISP = new AWS.CognitoIdentityServiceProvider({
+  region: config.aws.cognito.region
+});
+
 // SNS Client
 const sns = new AWS.SNS({
   region: config.aws.region
@@ -25,6 +30,7 @@ const ses = new AWS.SES({
 
 module.exports = {
   s3,
+  cognitoISP,
   sns,
   ses,
   config: config.aws

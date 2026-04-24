@@ -1,4 +1,5 @@
-// Authorization and shared Express middleware (JWT verification lives in jwtAuth.js).
+// Note: Cognito token verification is now handled by middleware/cognitoAuth.js
+// This file contains only authorization and utility middleware
 
 // Check user role/permissions
 const authorize = (allowedRoles) => {

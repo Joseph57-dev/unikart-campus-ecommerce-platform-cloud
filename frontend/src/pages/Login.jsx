@@ -20,18 +20,18 @@ function Login({ onLogin }) {
 
     try {
       const response = await authService.login(form.email, form.password);
-
-      if (response.status === 'success' && response.data?.user) {
+      
+      if (response.status === 'success') {
+        const user = response.data.user;
         if (onLogin) {
-          onLogin(response.data.user);
+          onLogin(user);
         }
         navigate('/dashboard');
       } else {
         setError(response.message || 'Login failed');
       }
     } catch (err) {
-      const apiMessage = err.response?.data?.message;
-      setError(apiMessage || err.message || 'Invalid email or password');
+      setError(err.message || 'Invalid email or password');
       console.error('Login error:', err);
     } finally {
       setLoading(false);

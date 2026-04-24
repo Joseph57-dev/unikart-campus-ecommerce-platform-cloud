@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Shop from './pages/Shop.jsx';
 import CartPage from './pages/Cart.jsx';
@@ -10,9 +10,9 @@ import VendorDashboard from './pages/VendorDashboard.jsx';
 import DeanDashboard from './pages/DeanDashboard.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import productsData from './data/products.js';
-import authService from './services/authService';
 import './App.css';
 
+// User types and sample users
 const userTypes = {
   STUDENT: 'student',
   VENDOR: 'vendor',
@@ -20,26 +20,12 @@ const userTypes = {
   ADMIN: 'admin'
 };
 
-function normalizeUser(raw) {
-  if (!raw) return null;
-  if (raw.type && raw.name) {
-    return raw;
-  }
-  return {
-    id: String(raw.account_id ?? raw.id ?? ''),
-    email: raw.email,
-    type: raw.account_type ?? raw.type,
-    name: raw.full_name ?? raw.name ?? raw.email ?? 'User'
-  };
-}
-
-function ProtectedRoute({ children }) {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-}
+const sampleUsers = [
+  { id: 'stu001', email: 'student@campus.edu', password: 'student123', type: userTypes.STUDENT, name: 'John Student' },
+  { id: 'ven001', email: 'vendor@campus.edu', password: 'vendor123', type: userTypes.VENDOR, name: 'Campus Vendor' },
+  { id: 'dea001', email: 'dean@campus.edu', password: 'dean123', type: userTypes.DEAN, name: 'Dr. Dean Smith' },
+  { id: 'adm001', email: 'admin@campus.edu', password: 'admin123', type: userTypes.ADMIN, name: 'System Admin' }
+];
 
 const initialCart = () => {
   try {
@@ -53,7 +39,7 @@ const sampleOrders = [
   {
     id: 'ORD-1003',
     date: '2026-04-11',
-    total: 189000,
+    total: 189000, // UGX
     status: 'Shipped',
     items: [
       { name: 'Campus Hoodie', qty: 1, price: 85000 },
@@ -63,9 +49,11 @@ const sampleOrders = [
   {
     id: 'ORD-1002',
     date: '2026-04-08',
-    total: 219000,
+    total: 219000, // UGX
     status: 'Processing',
-    items: [{ name: 'HP Laptop', qty: 1, price: 1250000 }]
+    items: [
+      { name: 'HP Laptop', qty: 1, price: 1250000 }
+    ]
   }
 ];
 
@@ -73,7 +61,13 @@ function App() {
   const [products] = useState(productsData);
   const [cart, setCart] = useState(initialCart);
   const [orders, setOrders] = useState(sampleOrders);
-  const [currentUser, setCurrentUser] = useState(() => normalizeUser(authService.getStoredUser()));
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('unikart-user')) || null;
+    } catch {
+      return null;
+    }
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -82,27 +76,8 @@ function App() {
   }, [cart]);
 
   useEffect(() => {
-    let cancelled = false;
-    const token = localStorage.getItem('token');
-    if (!token || authService.getStoredUser()) {
-      return undefined;
-    }
-
-    (async () => {
-      try {
-        const res = await authService.verify();
-        if (cancelled || !res?.data?.user) return;
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-        setCurrentUser(normalizeUser(res.data.user));
-      } catch {
-        // Session invalid — api client may redirect to login on 401
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    localStorage.setItem('unikart-user', JSON.stringify(currentUser));
+  }, [currentUser]);
 
   useEffect(() => {
     const pageNames = {
@@ -111,9 +86,7 @@ function App() {
       '/cart': 'Cart',
       '/checkout': 'Checkout',
       '/login': 'Login',
-      '/dashboard': currentUser
-        ? `${currentUser.type.charAt(0).toUpperCase() + currentUser.type.slice(1)} Dashboard`
-        : 'Dashboard'
+      '/dashboard': currentUser ? `${currentUser.type.charAt(0).toUpperCase() + currentUser.type.slice(1)} Dashboard` : 'Dashboard'
     };
 
     const routeName = pageNames[location.pathname] || 'Unikart Campus Online Shopping Store';
@@ -124,14 +97,18 @@ function App() {
   const cartCount = useMemo(() => cart.reduce((sum, item) => sum + item.quantity, 0), [cart]);
   const cartTotal = useMemo(() => cart.reduce((sum, item) => sum + item.price * item.quantity, 0), [cart]);
 
-  const handleAuthLogin = (user) => {
-    const normalized = normalizeUser(user);
-    setCurrentUser(normalized);
+  const login = (email, password) => {
+    const user = sampleUsers.find(u => u.email === email && u.password === password);
+    if (user) {
+      setCurrentUser(user);
+      return true;
+    }
+    return false;
   };
 
   const logout = () => {
     setCurrentUser(null);
-    authService.logout();
+    navigate('/');
   };
 
   const addToCart = (product) => {
@@ -223,12 +200,10 @@ function App() {
         {currentUser ? (
           <div className="user-info">
             <span>Welcome, {currentUser.name}</span>
-            <button type="button" className="button secondary" onClick={logout}>
-              Logout
-            </button>
+            <button className="button secondary" onClick={logout}>Logout</button>
           </div>
         ) : (
-          <button type="button" className="cart-button" onClick={() => navigate('/cart')}>
+          <button className="cart-button" onClick={() => navigate('/cart')}>
             Cart <span>{cartCount}</span>
           </button>
         )}
@@ -236,8 +211,14 @@ function App() {
 
       <main className="content-wrap">
         <Routes>
-          <Route path="/" element={<Home onAdd={addToCart} cartCount={cartCount} />} />
-          <Route path="/shop" element={<Shop products={products} onAdd={addToCart} />} />
+          <Route
+            path="/"
+            element={<Home onAdd={addToCart} cartCount={cartCount} />}
+          />
+          <Route
+            path="/shop"
+            element={<Shop products={products} onAdd={addToCart} />}
+          />
           <Route
             path="/cart"
             element={
@@ -252,12 +233,21 @@ function App() {
           />
           <Route
             path="/checkout"
-            element={<Checkout cartItems={cart} total={cartTotal} onSubmit={placeOrder} />}
+            element={
+              <Checkout
+                cartItems={cart}
+                total={cartTotal}
+                onSubmit={placeOrder}
+              />
+            }
           />
-          <Route path="/login" element={<Login onLogin={handleAuthLogin} />} />
+          <Route
+            path="/login"
+            element={<Login onLogin={login} />}
+          />
           <Route
             path="/dashboard"
-            element={<ProtectedRoute>{renderDashboard()}</ProtectedRoute>}
+            element={renderDashboard()}
           />
         </Routes>
       </main>

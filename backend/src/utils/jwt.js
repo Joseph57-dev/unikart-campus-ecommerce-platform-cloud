@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 
-// S3-related helpers (API JWT is handled in authController + middleware/jwtAuth.js).
+// Note: JWT token generation and verification is now handled by AWS Cognito
+// This file contains only S3-related utilities
 
 // Generate S3 key for product image
 const generateS3Key = (productId, filename) => {

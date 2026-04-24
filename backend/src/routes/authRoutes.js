@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const verifyJwt = require('../middleware/jwtAuth');
+const verifyCognitoToken = require('../middleware/cognitoAuth');
 
-router.post('/register', authController.register);
-router.post('/login', authController.login);
+// Public routes (no auth required)
 router.post('/logout', authController.logout);
-router.get('/verify', verifyJwt, authController.verify);
+
+// Protected routes
+router.get('/verify', verifyCognitoToken, authController.verify);
 
 module.exports = router;
